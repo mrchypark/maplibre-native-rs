@@ -18,10 +18,12 @@ use crate::renderer::MapDebugOptions;
 ///
 /// ```no_run
 /// # fn foo() {
-/// use maplibre_native::{ImageRendererBuilder, Image};
+/// use std::num::NonZeroU32;
 ///
-/// let renderer = ImageRendererBuilder::new()
-///     .with_size(512, 512)
+/// use maplibre_native::{Image, ImageRendererBuilder};
+///
+/// let mut renderer = ImageRendererBuilder::new()
+///     .with_size(NonZeroU32::new(512).unwrap(), NonZeroU32::new(512).unwrap())
 ///     .build_static_renderer();
 ///
 /// renderer.load_style_from_url(&"https://demotiles.maplibre.org/style.json".parse().unwrap());
