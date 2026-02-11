@@ -48,10 +48,13 @@ jobs:
           - runs-on: ubuntu-24.04-arm
             backend: vulkan
           # macOS ARM
-          #- runs-on: macos-latest
-          #  backend: metal
-          #- runs-on: macos-latest
-          #  backend: vulkan
+          - runs-on: macos-latest
+            backend: metal
+          # Windows x86_64
+          - runs-on: windows-latest
+            backend: opengl
+          - runs-on: windows-latest
+            backend: vulkan
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with: { persist-credentials: false }
@@ -59,6 +62,12 @@ jobs:
         uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2.8.2
       - uses: taiki-e/install-action@b9c5db3aef04caffaf95a1d03931de10fb2a140f # v2.65.1
         with: { tool: 'just' }
+      - name: Install Vulkan SDK
+        if: runner.os == 'Windows' && matrix.backend == 'vulkan'
+        uses: humbletim/install-vulkan-sdk@30ba978f977e81b72d091fc8888feb1fb26f9aff # v1.2
+        with:
+          version: 1.4.309.0
+          cache: true
       - run: just env-info install-dependencies '${{ matrix.backend }}'
       - run: rustup update stable && rustup default stable
       - run: just ci-test ${{ matrix.backend }}
@@ -81,10 +90,13 @@ jobs:
           - runs-on: ubuntu-24.04-arm
             backend: opengl
           # macOS ARM
-          #- runs-on: macos-latest
-          #  backend: metal
-          #- runs-on: macos-latest
-          #  backend: vulkan
+          - runs-on: macos-latest
+            backend: metal
+          # Windows x86_64
+          - runs-on: windows-latest
+            backend: opengl
+          - runs-on: windows-latest
+            backend: vulkan
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with: { persist-credentials: false }
@@ -92,6 +104,12 @@ jobs:
         uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2.8.2
       - uses: taiki-e/install-action@b9c5db3aef04caffaf95a1d03931de10fb2a140f # v2.65.1
         with: { tool: 'just' }
+      - name: Install Vulkan SDK
+        if: runner.os == 'Windows' && matrix.backend == 'vulkan'
+        uses: humbletim/install-vulkan-sdk@30ba978f977e81b72d091fc8888feb1fb26f9aff # v1.2
+        with:
+          version: 1.4.309.0
+          cache: true
       - run: just env-info install-dependencies '${{ matrix.backend }}'
       - name: Read MSRV
         id: msrv
