@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix macOS linking by using the non-amalgamated MapLibre Native core artefact and linking required system deps.
+
+### Other
+
+- Enable CI coverage for macOS (metal) and Windows (opengl/egl) and add caching for core artefacts downloads.
+
 ## [0.4.1](https://github.com/maplibre/maplibre-native-rs/compare/v0.4.0...v0.4.1) - 2025-10-06
 
 ### Other

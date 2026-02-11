@@ -32,11 +32,17 @@ We also support the following other features:
 At its core, we work as follows:
 
 ```rust
-use maplibre_native::{ImageRendererOptions, Image};
-let mut renderer = ImageRendererOptions::new();
-renderer.with_size(512, 512);
-let mut renderer = renderer.build_static_renderer();
-renderer.load_style_from_url(&"https://demotiles.maplibre.org/style.json".parse().unwrap());
+use std::num::NonZeroU32;
+
+use maplibre_native::{Image, ImageRendererBuilder};
+use url::Url;
+
+let mut renderer = ImageRendererBuilder::new()
+    .with_size(NonZeroU32::new(512).unwrap(), NonZeroU32::new(512).unwrap())
+    .build_static_renderer();
+
+let style_url: Url = "https://demotiles.maplibre.org/style.json".parse().unwrap();
+renderer.load_style_from_url(&style_url);
 let image: Image = renderer.render_static(0.0, 0.0, 0.0, 0.0, 0.0).unwrap();
 
 // Access the underlying ImageBuffer for all operations
@@ -56,9 +62,9 @@ The following platform and rendering-API combinations are supported and tested i
 |-------------|-------|--------|--------|
 | Linux x86   | ❌    | ✅     | ✅     |
 | Linux ARM   | ❌    | ✅     | ✅     |
-| Windows x86 | ❌    | 🟨     | 🟨     |
+| Windows x86 | ❌    | 🟨     | ✅     |
 | Windows ARM | ❌    | 🟨     | 🟨     |
-| macOS ARM   | 🟨    | 🟨[^1] | ❌     |
+| macOS ARM   | ✅    | 🟨[^1] | ❌     |
 
 <sub>
 ✅ = IS supported and tested in CI
@@ -90,7 +96,7 @@ We can get the library and headers from two places:
   A pull request is created if an update is available.
 
   </details>
-- <details><summary>if the env vars <code>MLN_CORE_LIBRARY_PATH</code> and <code>MLN_CORE_HEADERS_PATH</code> are set: from local disk via the environment variables</summary>
+- <details><summary>if the env vars <code>MLN_CORE_LIBRARY_PATH</code> and <code>MLN_CORE_LIBRARY_HEADERS_PATH</code> (or <code>MLN_CORE_HEADERS_PATH</code>) are set: from local disk via the environment variables</summary>
 
   If you don't want to allow network access during buildscript execution, we allow you to download the release and tell us where you have downloaded the contents.
   You can also build from source by following the steps that maplibre-native does in CI to produce the artefacts.
