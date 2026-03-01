@@ -13,7 +13,7 @@ exclude = []
 
 [package.metadata.mln]
 repo = "maplibre/maplibre-native"
-release = "core-aeaadc06b4e0614f4f243db4dce210c22dde9f9c"
+release = "core-cc8aa6fe74564180e2eed277dabd2043907c7fd8"
 
 [features]
 default = ["log", "pool"] # automatically picks the platform-specific features
